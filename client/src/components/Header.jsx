@@ -25,10 +25,10 @@ export default function Header() {
                 <li className='hover:underline text-blue-700 font-bold'>Home</li>
                 </Link>
                 <Link to='/About'>
-                <li className='hidden sm:inline hover:underline ' >About</li>
+                <li className='hidden sm:inline hover:text-white ' >About</li>
                 </Link>
                 <Link to='/Sign-In'>
-                <li className='hover:underline' >SignIN</li>
+                <li className='hover:text-white' >SignIN</li>
                 </Link>
             </ul>
         </div>
