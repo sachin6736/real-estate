@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
+
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -69,14 +71,18 @@ export default function SignIn() {
           onChange={handleChange}
         />
         {error && <p className="text-red-500 text-center font-bold">{error}</p>}
+        <div className="flex flex-col gap-3 mt-6" >
         <button
           style={{ backgroundColor: 'rgb(59,108,246)' }}
-          className="rounded-md p-2 my-8 font-semibold hover:text-white w-full"
+          className="rounded-md p-2  font-semibold hover:text-white w-full"
           type="submit"
           disabled={loading} // Disable button when loading
         >
           {loading ? 'Loading...' : 'Sign In'}
         </button>
+        <OAuth/>
+        </div>
+       
       </form>
       <div className="flex gap-1 justify-center flex-wrap text-center">
         <p className="text-blue-700">Don't have an account?</p>

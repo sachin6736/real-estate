@@ -43,9 +43,38 @@ export const signin = async(req,res,next)=>{
             return next(errorHandler(401,'wrong email or password'));
         }
         const token = jwt.sign({id:valid._id},process.env.JWT_SECRET);
-        res.cookie('access_token',token,{httpOnly:true}).status(200).json(valid);
+        const { password: removedPassword, ...userWithoutPassword } = valid._doc;
+        res.cookie('access_token',token,{httpOnly:true}).status(200).json(userWithoutPassword);
     } catch (error) {
         next(error);
         console.log(error)
+    }
+};
+
+export const google = async (req,res,next)=>{
+    try {
+        const user = await User.findOne({email:req.body.email});
+        if (user){
+            const token = jwt.sign({id:user._id},process.env.JWT_SECRET);
+            const { password: removedPassword, ...userWithoutPassword } = user._doc;
+            res.cookie('access_token',token,{httpOnly:true}).status(200).json(userWithoutPassword);
+        }else{
+            const newpassword = Math.random().toString(36).slice(-8);
+            const hashpassword = bcryptjs.hashSync(newpassword,10);
+            const newUser = new User({
+                username:req.body.username,
+                email:req.body.email,
+                profile:req.body.photo,
+                password:hashpassword  
+            });
+            await newUser.save();
+            const token = jwt.sign({id:newUser._id},process.env.JWT_SECRET);
+            const { password: removedPassword, ...userWithoutPassword } = newUser._doc;
+            res.cookie('access_token',token,{httpOnly:true}).status(200).json(userWithoutPassword);
+
+        }
+    } catch (error) {
+        console.log(error)
+        next(error)
     }
 }
