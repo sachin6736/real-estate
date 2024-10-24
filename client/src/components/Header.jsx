@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { MdOutlineManageSearch } from "react-icons/md";
+import { useSelector } from 'react-redux';
+
 
 export default function Header() {
+    const {currentUser} = useSelector(state=>state.user)
   return (
     <header className='bg-slate-400'>
         <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
@@ -27,9 +30,12 @@ export default function Header() {
                 <Link to='/About'>
                 <li className='hidden sm:inline hover:text-white ' >About</li>
                 </Link>
-                <Link to='/Sign-Up'>
-                <li className='hover:text-white' >SignUp</li>
+                <Link to='/Profile'>
+                {currentUser ? (<img className='rounded-full h-7 w-7 object-cover' src={currentUser.profile || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8Y5xaNg8XHozP4KA0hfpm46f653K0-Cb1Dg&s'} alt='profile' />):  <li className='hover:text-white' >SignUp</li>}
                 </Link>
+               
+               
+               
             </ul>
         </div>
     </header>
